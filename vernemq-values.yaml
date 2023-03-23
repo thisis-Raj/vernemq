@@ -171,6 +171,7 @@ secretMounts:
      path: /etc/vernemq-passwd
    - name: vernemq-certificates
      secretName: vernemq-cert-new
+     path: /etc/ssl/vernemq
 
 statefulset:
   ## Start and stop pods in Parallel or OrderedReady (one-by-one.)  Note - Can not change after first release.
@@ -260,7 +261,7 @@ additionalEnv:
   - name: DOCKER_VERNEMQ_LISTENER__SSL__ALLOWED_PROTOCOL_VERSIONS
     value: "3,4,5"
   - name: DOCKER_VERNEMQ_LISTENER__WSS__WSS_DEFAULT
-    value: "127.0.0.1:9002"
+    value: "$(MY_POD_IP):9002"
   - name: DOCKER_VERNEMQ_LISTENER__WSS__WSS_DEFAULT__CAFILE
     value: "/etc/ssl/vernemq/ca-chain.cert.pem"
   - name: DOCKER_VERNEMQ_LISTENER__WSS__WSS_DEFAULT__CERTFILE
@@ -273,6 +274,8 @@ additionalEnv:
     value: "3,4,5"
   - name: DOCKER_VERNEMQ_LISTENER__SSL__DEPTH
     value: "2"
+  - name: DOCKER_VERNEMQ_LISTENER__WS__DEFAULT
+    value: "$(MY_POD_IP):9001"
     #  - name: DOCKER_VERNEMQ_LOG__CONSOLE__LEVEL
     #    value: "debug"
 
